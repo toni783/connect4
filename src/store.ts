@@ -7,10 +7,8 @@ import {
 
 import counterReducer from "./features/counter/counterSlice";
 
-import { animationsReducer } from "redux-time";
 const reducer = combineReducers({
   counter: counterReducer,
-  animations: animationsReducer,
 });
 
 export function makeStore() {
