@@ -8,7 +8,6 @@ export const Cell = ({ value, columnIndex, play }) => {
     color = "yellowCircle";
   }
 
-  console.log(styles[color]);
   return (
     <td>
       <div
