@@ -1,5 +1,3 @@
-//1
-import { useReducer } from "react";
 import { Button } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
@@ -15,70 +13,14 @@ import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
 import { Cell } from "./CustomCell";
 
-//2
-const gameReducer = (state, action) => {
-  switch (action.type) {
-    case "newGame":
-      return {
-        ...initialGameState,
-        board: action.board,
-      };
-    case "togglePlayer":
-      return {
-        ...state,
-        currentPlayer: action.nextPlayer,
-        board: action.board,
-      };
-    case "endGame":
-      return {
-        ...state,
-        gameOver: true,
-        message: action.message,
-        board: action.board,
-      };
-    case "updateMessage":
-      return {
-        ...state,
-        message: action.message,
-      };
-    default:
-      throw Error(`Action "${action.type}" is not a valid action.`);
-  }
-};
-
-//3
-const initialGameState = {
-  player1: 1,
-  player2: 2,
-  currentPlayer: 1,
-  board: [
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null],
-  ],
-  gameOver: false,
-  message: "dfsdf",
-};
-
 export const Connect4 = () => {
-  //   const [gameState, dispatchGameState] = useReducer(
-  //     gameReducer,
-  //     initialGameState
-  //   );
-
   const gameState = useAppSelector(selectBoard);
   const dispatch = useAppDispatch();
   console.log({ gameState });
-  //4
-  // triggered when a user clicks a cell
+
   const play = (c, r) => {
     if (!gameState.gameOver) {
       let board = deepCloneBoard(gameState.board);
-      console.log({ board });
-      //check if cell is taken by starting at the bottom row and working up
       if (!board[r][c]) {
         board[r][c] = gameState.currentPlayer;
       }
@@ -92,11 +34,6 @@ export const Connect4 = () => {
             board,
           })
         );
-        // dispatchGameState({
-        //   type: "endGame",
-        //   message: "Player1 (red) wins!",
-        //   board,
-        // });
       } else if (result === gameState.player2) {
         dispatch(
           endGame({
@@ -104,11 +41,6 @@ export const Connect4 = () => {
             board,
           })
         );
-        // dispatchGameState({
-        //   type: "endGame",
-        //   message: "Player2 (yellow) wins!",
-        //   board,
-        // });
       } else if (result === "draw") {
         dispatch(
           endGame({
@@ -116,11 +48,6 @@ export const Connect4 = () => {
             board,
           })
         );
-        // dispatchGameState({
-        //   type: "endGame",
-        //   message: "Draw Game!",
-        //   board,
-        // });
       } else {
         const nextPlayer =
           gameState.currentPlayer === gameState.player1
@@ -128,7 +55,6 @@ export const Connect4 = () => {
             : gameState.player1;
 
         dispatch(togglePlayer({ nextPlayer, board }));
-        // dispatchGameState({ type: "togglePlayer", nextPlayer, board });
       }
     }
     // it's gameover and a user clicked a cell
@@ -138,22 +64,14 @@ export const Connect4 = () => {
           message: "Game Over. Please start a new game.",
         })
       );
-
-      //   dispatchGameState({
-      //     type: "updateMessage",
-      //     message: "Game Over. Please start a new game.",
-      //   });
     }
   };
 
   return (
     <>
       <Button
-        //   colorScheme="purple"
         className={styles.button}
         onClick={() => {
-          // dispatchGameState({ type: "newGame", board: generateNewBoard() });
-
           dispatch(
             newGame({
               board: generateNewBoard(),
@@ -166,7 +84,6 @@ export const Connect4 = () => {
       <table>
         <tbody>
           {gameState.board.map((row, r) => (
-            //6
             <tr>
               {row.map((cell, c) => (
                 <Cell
