@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import styles from "../../styles/Home.module.css";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
-import { Row as CustomRow } from "./CustomRow";
+import { Cell } from "./CustomRow";
 
 //2
 const gameReducer = (state, action) => {
@@ -63,16 +63,13 @@ export const Connect4 = () => {
 
   //4
   // triggered when a user clicks a cell
-  const play = (c) => {
+  const play = (c, r) => {
     console.log(c);
     if (!gameState.gameOver) {
       let board = deepCloneBoard(gameState.board);
       //check if cell is taken by starting at the bottom row and working up
-      for (let r = 5; r >= 0; r--) {
-        if (!board[r][c]) {
-          board[r][c] = gameState.currentPlayer;
-          break;
-        }
+      if (!board[r][c]) {
+        board[r][c] = gameState.currentPlayer;
       }
 
       // Check status of board
@@ -127,9 +124,18 @@ export const Connect4 = () => {
       //5
       <table>
         <tbody>
-          {gameState.board.map((row, i) => (
+          {gameState.board.map((row, r) => (
             //6
-            <CustomRow key={i} row={row} play={play} />
+            <tr>
+              {row.map((cell, c) => (
+                <Cell
+                  key={c}
+                  value={cell}
+                  columnIndex={c}
+                  play={() => play(c, r)}
+                />
+              ))}
+            </tr>
           ))}
         </tbody>
       </table>
