@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import styles from "../../styles/Home.module.css";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
-import { Cell } from "./CustomRow";
+import { Cell } from "./CustomCell";
 
 //2
 const gameReducer = (state, action) => {
@@ -121,7 +121,6 @@ export const Connect4 = () => {
       >
         New Game
       </Button>
-      //5
       <table>
         <tbody>
           {gameState.board.map((row, r) => (
