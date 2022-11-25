@@ -16,7 +16,6 @@ import { Cell } from "./CustomCell";
 export const Connect4 = () => {
   const gameState = useAppSelector(selectBoard);
   const dispatch = useAppDispatch();
-  console.log({ gameState });
 
   const play = (c, r) => {
     if (!gameState.gameOver) {
@@ -84,7 +83,7 @@ export const Connect4 = () => {
       <table>
         <tbody>
           {gameState.board.map((row, r) => (
-            <tr>
+            <tr key={r}>
               {row.map((cell, c) => (
                 <Cell
                   key={c}
