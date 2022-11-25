@@ -43,6 +43,9 @@
   width: 70px;
   background-color: #1990ff;
   cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 .whiteCircle,
