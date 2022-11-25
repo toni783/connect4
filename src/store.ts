@@ -4,11 +4,13 @@ import {
   Action,
   combineReducers,
 } from "@reduxjs/toolkit";
+import boardReducer from "./features/board/boardSlice";
 
 import counterReducer from "./features/counter/counterSlice";
 
 const reducer = combineReducers({
   counter: counterReducer,
+  board: boardReducer,
 });
 
 export function makeStore() {

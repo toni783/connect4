@@ -1,8 +1,16 @@
 //1
 import { useReducer } from "react";
 import { Button } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 
 import styles from "../../styles/Home.module.css";
+import {
+  endGame,
+  newGame,
+  selectBoard,
+  togglePlayer,
+  updateMessage,
+} from "./boardSlice";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
 import { Cell } from "./CustomCell";
@@ -56,17 +64,20 @@ const initialGameState = {
 };
 
 export const Connect4 = () => {
-  const [gameState, dispatchGameState] = useReducer(
-    gameReducer,
-    initialGameState
-  );
+  //   const [gameState, dispatchGameState] = useReducer(
+  //     gameReducer,
+  //     initialGameState
+  //   );
 
+  const gameState = useAppSelector(selectBoard);
+  const dispatch = useAppDispatch();
+  console.log({ gameState });
   //4
   // triggered when a user clicks a cell
   const play = (c, r) => {
-    console.log(c);
     if (!gameState.gameOver) {
       let board = deepCloneBoard(gameState.board);
+      console.log({ board });
       //check if cell is taken by starting at the bottom row and working up
       if (!board[r][c]) {
         board[r][c] = gameState.currentPlayer;
@@ -75,38 +86,63 @@ export const Connect4 = () => {
       // Check status of board
       let result = checkForWin(board);
       if (result === gameState.player1) {
-        dispatchGameState({
-          type: "endGame",
-          message: "Player1 (red) wins!",
-          board,
-        });
+        dispatch(
+          endGame({
+            message: "Player1 (red) wins!",
+            board,
+          })
+        );
+        // dispatchGameState({
+        //   type: "endGame",
+        //   message: "Player1 (red) wins!",
+        //   board,
+        // });
       } else if (result === gameState.player2) {
-        dispatchGameState({
-          type: "endGame",
-          message: "Player2 (yellow) wins!",
-          board,
-        });
+        dispatch(
+          endGame({
+            message: "Player2 (yellow) wins!",
+            board,
+          })
+        );
+        // dispatchGameState({
+        //   type: "endGame",
+        //   message: "Player2 (yellow) wins!",
+        //   board,
+        // });
       } else if (result === "draw") {
-        dispatchGameState({
-          type: "endGame",
-          message: "Draw Game!",
-          board,
-        });
+        dispatch(
+          endGame({
+            message: "Draw Game!",
+            board,
+          })
+        );
+        // dispatchGameState({
+        //   type: "endGame",
+        //   message: "Draw Game!",
+        //   board,
+        // });
       } else {
         const nextPlayer =
           gameState.currentPlayer === gameState.player1
             ? gameState.player2
             : gameState.player1;
 
-        dispatchGameState({ type: "togglePlayer", nextPlayer, board });
+        dispatch(togglePlayer({ nextPlayer, board }));
+        // dispatchGameState({ type: "togglePlayer", nextPlayer, board });
       }
     }
     // it's gameover and a user clicked a cell
     else {
-      dispatchGameState({
-        type: "updateMessage",
-        message: "Game Over. Please start a new game.",
-      });
+      dispatch(
+        updateMessage({
+          message: "Game Over. Please start a new game.",
+        })
+      );
+
+      //   dispatchGameState({
+      //     type: "updateMessage",
+      //     message: "Game Over. Please start a new game.",
+      //   });
     }
   };
 
@@ -116,7 +152,13 @@ export const Connect4 = () => {
         //   colorScheme="purple"
         className={styles.button}
         onClick={() => {
-          dispatchGameState({ type: "newGame", board: generateNewBoard() });
+          // dispatchGameState({ type: "newGame", board: generateNewBoard() });
+
+          dispatch(
+            newGame({
+              board: generateNewBoard(),
+            })
+          );
         }}
       >
         New Game
