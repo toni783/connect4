@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
 import styles from "../../styles/Home.module.css";
@@ -18,32 +18,32 @@ export const Connect4 = () => {
   const dispatch = useAppDispatch();
 
   const play = (c, r) => {
-    if (!gameState.gameOver) {
-      let board = deepCloneBoard(gameState.board);
-      if (!board[r][c]) {
-        board[r][c] = gameState.currentPlayer;
-      }
+    let board = deepCloneBoard(gameState.board);
+    if (!board[r][c]) {
+      board[r][c] = gameState.currentPlayer;
 
       // Check status of board
       let result = checkForWin(board);
       if (result === gameState.player1) {
         dispatch(
           endGame({
-            message: "Player1 (red) wins!",
+            messageBody: "Player1 (red) wins!",
+            messageVariant: "danger",
             board,
           })
         );
       } else if (result === gameState.player2) {
         dispatch(
           endGame({
-            message: "Player2 (yellow) wins!",
+            messageBody: "Player2 (yellow) wins!",
+            messageVariant: "warning",
             board,
           })
         );
       } else if (result === "draw") {
         dispatch(
           endGame({
-            message: "Draw Game!",
+            messageBody: "Draw Game!",
             board,
           })
         );
@@ -55,48 +55,67 @@ export const Connect4 = () => {
 
         dispatch(togglePlayer({ nextPlayer, board }));
       }
-    }
-    // it's gameover and a user clicked a cell
-    else {
+    } else {
       dispatch(
         updateMessage({
-          message: "Game Over. Please start a new game.",
+          messageBody: "Please Select Another Cell",
         })
       );
     }
   };
-
   return (
     <>
-      <Button
-        className={styles.button}
-        onClick={() => {
-          dispatch(
-            newGame({
-              board: generateNewBoard(),
-            })
-          );
-        }}
-      >
-        New Game
-      </Button>
-      <table>
-        <tbody>
-          {gameState.board.map((row, r) => (
-            <tr key={r}>
-              {row.map((cell, c) => (
-                <Cell
-                  key={c}
-                  value={cell}
-                  columnIndex={c}
-                  play={() => play(c, r)}
-                />
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2 className="lead">{gameState.message}</h2>
+      <Container>
+        <Row>
+          <Col className={`d-flex justify-content-center mx-auto m-5 `}>
+            <table
+              className={
+                gameState.isBoardDisabled ? styles["board-disabled"] : ""
+              }
+            >
+              <tbody>
+                {gameState.board.map((row, r) => (
+                  <tr key={r}>
+                    {row.map((cell, c) => (
+                      <Cell
+                        key={c}
+                        value={cell}
+                        columnIndex={c}
+                        play={() => play(c, r)}
+                      />
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+
+        <Row className={`m-2`}>
+          {gameState.message.messageBody ? (
+            <Alert variant={gameState.message.messageVariant}>
+              {gameState.message.messageBody}
+            </Alert>
+          ) : null}
+        </Row>
+
+        <Row className={`m-2`}>
+          {gameState.isBoardDisabled ? (
+            <Button
+              className={styles.button}
+              onClick={() => {
+                dispatch(
+                  newGame({
+                    board: generateNewBoard(),
+                  })
+                );
+              }}
+            >
+              {gameState.gameOver ? "Start New Game" : "Play"}
+            </Button>
+          ) : null}
+        </Row>
+      </Container>
     </>
   );
 };
