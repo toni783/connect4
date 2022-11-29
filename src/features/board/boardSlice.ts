@@ -7,6 +7,7 @@ enum Players {
   PLAYER_2 = 2,
 }
 export interface BoardState {
+  id: number;
   player1: Players.PLAYER_1;
   player2: Players.PLAYER_2;
   currentPlayer: Players;
@@ -20,6 +21,8 @@ export interface BoardState {
 }
 
 const initialState: BoardState = {
+  /**Initial state with an id out of bounds  */
+  id: -1,
   player1: Players.PLAYER_1,
   player2: Players.PLAYER_2,
   currentPlayer: Players.PLAYER_1,
