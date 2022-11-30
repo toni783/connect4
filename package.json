@@ -12,6 +12,7 @@
     "@types/pg": "^8.6.5",
     "axios": "^1.2.0",
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.29.3",
     "next": "latest",
     "pg": "^8.8.0",
     "react": "^18.1.0",
