@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { SELECT_STATEMENT } from ".";
 import { conn } from "../../../utils/database";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,17 +12,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case "PUT":
       try {
-        const { gameOver, message, isBoardDisabled, board, currentPlayer } =
-          body;
+        const {
+          isGameOver,
+          alertMessage,
+          isGameDisabled,
+          gameBoard,
+          currentPlayer,
+        } = body;
         const text = `
           UPDATE game 
-                SET "gameOver" = $1, message = $2, "isBoardDisabled" = $3, board = $4, "currentPlayer" = $5, timestamp = CURRENT_TIMESTAMP 
-          WHERE id = $6 RETURNING *`;
+                SET is_game_over = $1, alert_message = $2, is_game_disabled = $3, game_board = $4, current_player = $5, update_time = CURRENT_TIMESTAMP 
+          WHERE game_id = $6 RETURNING ${SELECT_STATEMENT}`;
         const values = [
-          gameOver,
-          message,
-          isBoardDisabled,
-          board,
+          isGameOver,
+          alertMessage,
+          isGameDisabled,
+          gameBoard,
           currentPlayer,
           id,
         ];
@@ -29,13 +35,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const result = await conn.query(text, values);
         return res.json(result.rows[0]);
       } catch (error: any) {
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.alertMessage });
       }
     case "DELETE":
       try {
         const text = `
           DELETE FROM game 
-                WHERE id = $1 RETURNING *`;
+                WHERE game_id = $1 RETURNING ${SELECT_STATEMENT}`;
         const values = [id];
         const result = await conn.query(text, values);
 
@@ -44,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         return res.json(result.rows[0]);
       } catch (error: any) {
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.alertMessage });
       }
     default:
       return res.status(400).json({ message: "Method are not supported" });
