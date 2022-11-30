@@ -31,7 +31,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     case "POST":
       try {
         const { isGameOver, alertMessage, isGameDisabled, gameBoard } = body;
-        console.log({ bodyOfPost: body });
 
         const query = `
             INSERT INTO game
@@ -44,7 +43,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
         const response = await conn.query(query, values);
 
-        console.log({ fields: response.rows });
         return res.json(response.rows[0]);
       } catch (error: any) {
         return res.status(400).json({ message: error.alertMessage });

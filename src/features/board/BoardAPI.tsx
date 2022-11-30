@@ -17,7 +17,6 @@ export const boardApi = emptySplitApi.injectEndpoints({
         >
       >({
         query(payload) {
-          console.log({ payload });
           return {
             url: `api/game`,
             method: "POST",

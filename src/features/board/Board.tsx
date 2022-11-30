@@ -37,7 +37,6 @@ export const Connect4 = () => {
   const [updateGame, result3] = useUpdateGameMutation();
 
   const [displayModal, setDisplayModal] = useState(false);
-  console.log({ games });
 
   const onStartNewGame = async () => {
     try {

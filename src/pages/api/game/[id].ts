@@ -31,7 +31,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           currentPlayer,
           id,
         ];
-        console.log({ values });
         const result = await conn.query(text, values);
         return res.json(result.rows[0]);
       } catch (error: any) {
