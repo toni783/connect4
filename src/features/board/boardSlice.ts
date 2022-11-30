@@ -11,13 +11,13 @@ export interface BoardState {
   player1: Players.PLAYER_1;
   player2: Players.PLAYER_2;
   currentPlayer: Players;
-  board: number[][];
-  gameOver: boolean;
-  message: {
+  gameBoard: number[][];
+  isGameOver: boolean;
+  alertMessage: {
     messageBody: string;
     messageVariant: "primary" | "success" | "danger" | "warning";
   };
-  isBoardDisabled: boolean;
+  isGameDisabled: boolean;
 }
 
 const initialState: BoardState = {
@@ -26,7 +26,7 @@ const initialState: BoardState = {
   player1: Players.PLAYER_1,
   player2: Players.PLAYER_2,
   currentPlayer: Players.PLAYER_1,
-  board: [
+  gameBoard: [
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
@@ -34,13 +34,18 @@ const initialState: BoardState = {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
   ],
-  gameOver: false,
-  message: { messageBody: "Welcome to Connect4", messageVariant: "primary" },
-  isBoardDisabled: true,
+  isGameOver: false,
+  alertMessage: {
+    messageBody: "Welcome to Connect4",
+    messageVariant: "primary",
+  },
+  isGameDisabled: true,
 };
 
-function getPlayerTurnMessage(playerType: Players): BoardState["message"] {
-  const message: BoardState["message"] = {
+export function getPlayerTurnMessage(
+  playerType: Players
+): BoardState["alertMessage"] {
+  const message: BoardState["alertMessage"] = {
     messageVariant: "danger",
     messageBody: "Player1 (red) turn",
   };
@@ -52,73 +57,87 @@ function getPlayerTurnMessage(playerType: Players): BoardState["message"] {
   return message;
 }
 
-export const boardSlice = createSlice({
-  name: "board",
+export const gameBoardSlice = createSlice({
+  name: "gameBoard",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     newGame(
       state,
       action: PayloadAction<{
-        board: BoardState["board"];
+        gameBoard: BoardState["gameBoard"];
       }>
     ) {
-      state.board = action.payload.board;
-      state.isBoardDisabled = false;
-      state.gameOver = false;
-      state.message = getPlayerTurnMessage(state.currentPlayer);
+      state.gameBoard = action.payload.gameBoard;
+      state.isGameDisabled = false;
+      state.isGameOver = false;
+      state.alertMessage = getPlayerTurnMessage(state.currentPlayer);
     },
     togglePlayer(
       state,
       action: PayloadAction<{
-        board: BoardState["board"];
+        gameBoard: BoardState["gameBoard"];
         nextPlayer: BoardState["currentPlayer"];
       }>
     ) {
       state.currentPlayer = action.payload.nextPlayer;
-      state.board = action.payload.board;
-      state.message = getPlayerTurnMessage(action.payload.nextPlayer);
+      state.gameBoard = action.payload.gameBoard;
+      state.alertMessage = getPlayerTurnMessage(action.payload.nextPlayer);
     },
     endGame(
       state,
       action: PayloadAction<{
-        messageBody: BoardState["message"]["messageBody"];
-        board: BoardState["board"];
-        messageVariant?: BoardState["message"]["messageVariant"];
+        messageBody: BoardState["alertMessage"]["messageBody"];
+        gameBoard: BoardState["gameBoard"];
+        messageVariant?: BoardState["alertMessage"]["messageVariant"];
       }>
     ) {
-      state.gameOver = true;
-      state.isBoardDisabled = true;
-      state.message = {
-        ...state.message,
+      state.isGameOver = true;
+      state.isGameDisabled = true;
+      state.alertMessage = {
+        ...state.alertMessage,
         messageBody: action.payload.messageBody,
         messageVariant: action.payload.messageVariant,
       };
-      state.board = action.payload.board;
+      state.gameBoard = action.payload.gameBoard;
     },
     updateMessage(
       state,
       action: PayloadAction<{
-        messageBody: BoardState["message"]["messageBody"];
-        messageVariant?: BoardState["message"]["messageVariant"];
+        messageBody: BoardState["alertMessage"]["messageBody"];
+        messageVariant?: BoardState["alertMessage"]["messageVariant"];
       }>
     ) {
-      state.message = {
+      state.alertMessage = {
         messageBody: action.payload.messageBody,
         messageVariant: action.payload.messageVariant
           ? action.payload.messageVariant
           : "primary",
       };
     },
+    setSelectedBoard(
+      state,
+      action: PayloadAction<{
+        gameBoard: BoardState;
+      }>
+    ) {
+      state = action.payload.gameBoard;
+      return state;
+    },
   },
 });
 
-export const { newGame, endGame, updateMessage, togglePlayer } =
-  boardSlice.actions;
+export const {
+  newGame,
+  endGame,
+  updateMessage,
+  togglePlayer,
+  setSelectedBoard,
+} = gameBoardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.board.value)`
-export const selectBoard = (state: AppState) => state.board;
+// in the slice file. For example: `useSelector((state: RootState) => state.gameBoard.value)`
+export const selectBoard = (state: AppState) => state.gameBoard;
 
-export default boardSlice.reducer;
+export default gameBoardSlice.reducer;

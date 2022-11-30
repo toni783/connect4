@@ -11,7 +11,7 @@ import counterReducer from "./features/counter/counterSlice";
 
 const reducer = combineReducers({
   counter: counterReducer,
-  board: boardReducer,
+  gameBoard: boardReducer,
   [boardApi.reducerPath]: boardApi.reducer,
 });
 

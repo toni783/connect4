@@ -7,13 +7,13 @@ export const generateNewBoard = () => [
   [null, null, null, null, null, null, null],
 ];
 
-export const deepCloneBoard = (board) => [
-  [...board[0]],
-  [...board[1]],
-  [...board[2]],
-  [...board[3]],
-  [...board[4]],
-  [...board[5]],
+export const deepCloneBoard = (gameBoard) => [
+  [...gameBoard[0]],
+  [...gameBoard[1]],
+  [...gameBoard[2]],
+  [...gameBoard[3]],
+  [...gameBoard[4]],
+  [...gameBoard[5]],
 ];
 
 // for real tho...all credit for this super optimized logic belongs here: Jeff Leu circa November 23, 2016
