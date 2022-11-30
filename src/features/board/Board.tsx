@@ -38,6 +38,14 @@ export const Connect4 = () => {
 
   const [displayModal, setDisplayModal] = useState(false);
 
+  const onError = () => {
+    dispatch(
+      updateMessage({
+        messageBody: "Unexpected error! Please try again!",
+      })
+    );
+  };
+
   const onStartNewGame = async () => {
     try {
       const result = await createGame({
@@ -52,7 +60,7 @@ export const Connect4 = () => {
         })
       );
     } catch (e) {
-      //  TODO: add error message
+      onError();
     }
   };
 
@@ -74,7 +82,7 @@ export const Connect4 = () => {
             })
           );
         } catch (e) {
-          //  TODO: add error message
+          onError();
         }
       } else if (result === gameState.player2) {
         try {
@@ -88,7 +96,7 @@ export const Connect4 = () => {
             })
           );
         } catch (e) {
-          //  TODO: add error message
+          onError();
         }
       } else if (result === "draw") {
         try {
@@ -100,7 +108,7 @@ export const Connect4 = () => {
             })
           );
         } catch (e) {
-          //  TODO: add error message
+          onError();
         }
       } else {
         const nextPlayer =
@@ -121,7 +129,7 @@ export const Connect4 = () => {
             })
           );
         } catch (e) {
-          //  TODO: add error message
+          onError();
         }
 
         // dispatch(togglePlayer({ nextPlayer, board }));
@@ -160,37 +168,45 @@ export const Connect4 = () => {
               </tbody>
             </table>
           </Col>
-        </Row>
-
-        <Row className={`m-2`}>
-          {gameState.alertMessage.messageBody ? (
-            <Alert variant={gameState.alertMessage.messageVariant}>
-              {gameState.alertMessage.messageBody}
-            </Alert>
-          ) : null}
-        </Row>
-
-        <Row className={`m-2`}>
-          {gameState.isGameDisabled ? (
-            <Button className={styles.button} onClick={onStartNewGame}>
-              Start New Game (Locally)
-            </Button>
-          ) : null}
-        </Row>
-
-        <Row className={`m-2`}>
-          <Button
-            className={styles.button}
-            disabled={isLoadingGames}
-            onClick={() => {
-              setDisplayModal(true);
-            }}
-          >
-            {isLoadingGames ? "Loading…" : "Load Existing Game"}
-          </Button>
+          <Col className={` mx-auto m-5 `}>
+            {!gameState.isGameDisabled ? (
+              <Row className={`m-2`}>
+                <p>You are currently on the board: {gameState.id}</p>
+              </Row>
+            ) : null}{" "}
+            <Row className={`m-2`}>
+              {gameState.alertMessage.messageBody ? (
+                <Alert variant={gameState.alertMessage.messageVariant}>
+                  {gameState.alertMessage.messageBody}
+                </Alert>
+              ) : null}
+            </Row>
+            <Row className={`m-2`}>
+              <Button className={styles.button} onClick={onStartNewGame}>
+                Start New Game (Locally)
+              </Button>
+            </Row>
+            <Row className={`m-2`}>
+              <Button
+                className={styles.button}
+                disabled={isLoadingGames}
+                onClick={() => {
+                  if (games && games.length) {
+                    setDisplayModal(true);
+                  }
+                }}
+              >
+                {isLoadingGames
+                  ? "Loading…"
+                  : games.length > 0
+                  ? "Load Existing Game"
+                  : "No saves found"}
+              </Button>
+            </Row>
+          </Col>
         </Row>
       </Container>
-      {games ? (
+      {games && games.length ? (
         <CustomModal
           games={games}
           show={displayModal}
