@@ -34,7 +34,7 @@ export const GAMES_TAGS = "Games";
 
 // initialize an empty api service that we'll inject endpoints into later as needed
 export const emptySplitApi = createApi({
-  baseQuery: axiosBaseQuery({ baseUrl: "http://localhost:3000/" }),
+  baseQuery: axiosBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
   endpoints: () => ({}),
   tagTypes: [GAMES_TAGS],
 });
