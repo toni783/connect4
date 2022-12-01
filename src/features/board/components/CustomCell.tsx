@@ -6,6 +6,7 @@ type CellProps = {
   columnIndex: number;
   play: (columnIndex: number) => void;
 };
+
 export const Cell = ({ value, columnIndex, play }: CellProps) => {
   let color = "whiteCircle";
 
@@ -16,7 +17,15 @@ export const Cell = ({ value, columnIndex, play }: CellProps) => {
   }
 
   return (
-    <td>
+    <td
+      aria-label={`Connect4 ${
+        value === Players.PLAYER_1
+          ? "Red"
+          : value === Players.PLAYER_2
+          ? "Yellow"
+          : "Empty"
+      } Cell`}
+    >
       <div
         className={styles.gameCell}
         onClick={() => {

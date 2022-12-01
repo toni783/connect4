@@ -148,6 +148,11 @@ export const Connect4 = () => {
         <Row>
           <Col className={`d-flex justify-content-center mx-auto m-5 `}>
             <table
+              aria-label={
+                gameState.isGameDisabled
+                  ? "Connect4 game board disabled, please start a new game or load an existing game"
+                  : "Connect4 game board, enjoy your game "
+              }
               className={
                 gameState.isGameDisabled ? styles["board-disabled"] : ""
               }
