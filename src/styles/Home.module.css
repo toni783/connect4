@@ -43,3 +43,18 @@
   height: 200px;
   overflow-y: auto;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .gameCell {
+    height: 50px;
+    width: 50px;
+  }
+
+  .whiteCircle,
+  .redCircle,
+  .yellowCircle {
+    height: 45px;
+    width: 45px;
+  }
+}
