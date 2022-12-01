@@ -11,6 +11,7 @@ import {
 import { useAppDispatch } from "../../../hooks";
 import { setSelectedBoard } from "../BoardSlice";
 import { BoardState } from "../BoardTypes";
+import styles from "../../../styles/Home.module.css";
 
 type CustomModalProps = {
   games: BoardState[];
@@ -31,7 +32,7 @@ const CustomModal = ({ games, ...props }: CustomModalProps) => {
           Please select your save
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ height: "200px", overflowY: "auto" }}>
+      <Modal.Body className={styles["modal-body"]}>
         <ListGroup variant="flush">
           {games.map((val) => (
             <ListGroup.Item
