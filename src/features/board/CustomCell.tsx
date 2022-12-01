@@ -1,5 +1,5 @@
 import styles from "../../styles/Home.module.css";
-import { Players } from "./BoardSlice";
+import { Players } from "./BoardTypes";
 
 type CellProps = {
   value: Players;
