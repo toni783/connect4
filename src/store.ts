@@ -7,10 +7,7 @@ import {
 import { boardApi } from "./features/board/BoardAPI";
 import boardReducer from "./features/board/BoardSlice";
 
-import counterReducer from "./features/counter/counterSlice";
-
 const reducer = combineReducers({
-  counter: counterReducer,
   gameBoard: boardReducer,
   [boardApi.reducerPath]: boardApi.reducer,
 });
