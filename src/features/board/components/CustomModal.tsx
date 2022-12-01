@@ -1,10 +1,16 @@
-import { Col, Container, ListGroup, Row } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Modal, { ModalProps } from "react-bootstrap/Modal";
 import { format } from "date-fns";
-import { setSelectedBoard } from "../features/board/BoardSlice";
-import { useAppDispatch } from "../hooks";
-import { BoardState } from "../features/board/BoardTypes";
+import {
+  ModalProps,
+  Modal,
+  ListGroup,
+  Container,
+  Row,
+  Col,
+  Button,
+} from "react-bootstrap";
+import { useAppDispatch } from "../../../hooks";
+import { setSelectedBoard } from "../BoardSlice";
+import { BoardState } from "../BoardTypes";
 
 type CustomModalProps = {
   games: BoardState[];

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
-import CustomModal from "../../components/CustomModal";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
 import styles from "../../styles/Home.module.css";
@@ -22,7 +21,8 @@ import {
 } from "./BoardSlice";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
-import { Cell } from "./CustomCell";
+import { Cell } from "./components/CustomCell";
+import CustomModal from "./components/CustomModal";
 
 export const Connect4 = () => {
   const gameState = useAppSelector(selectBoard);
