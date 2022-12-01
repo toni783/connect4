@@ -8,7 +8,6 @@ export const boardApi = emptySplitApi.injectEndpoints({
         query: () => ({ url: "api/game", method: "get" }),
         providesTags: [GAMES_TAGS],
       }),
-      // TODO: add result type
       createGame: build.mutation<
         BoardState,
         Pick<
