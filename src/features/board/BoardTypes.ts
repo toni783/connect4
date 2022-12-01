@@ -15,4 +15,6 @@ export interface BoardState {
     messageVariant: "primary" | "success" | "danger" | "warning";
   };
   isGameDisabled: boolean;
+  updatedTime: Date;
+  createdTime: Date;
 }

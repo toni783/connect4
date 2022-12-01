@@ -23,6 +23,8 @@ const initialState: BoardState = {
     messageVariant: "primary",
   },
   isGameDisabled: true,
+  updatedTime: new Date(),
+  createdTime: new Date(),
 };
 
 export function getPlayerTurnMessage(
