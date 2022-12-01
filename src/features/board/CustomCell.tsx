@@ -1,10 +1,17 @@
 import styles from "../../styles/Home.module.css";
+import { Players } from "./BoardSlice";
 
-export const Cell = ({ value, columnIndex, play }) => {
+type CellProps = {
+  value: Players;
+  columnIndex: number;
+  play: (columnIndex: number) => void;
+};
+export const Cell = ({ value, columnIndex, play }: CellProps) => {
   let color = "whiteCircle";
-  if (value === 1) {
+
+  if (value === Players.PLAYER_1) {
     color = "redCircle";
-  } else if (value === 2) {
+  } else if (value === Players.PLAYER_2) {
     color = "yellowCircle";
   }
 

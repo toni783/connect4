@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { AppState } from "../../store";
 
-enum Players {
+export enum Players {
   PLAYER_1 = 1,
   PLAYER_2 = 2,
 }
