@@ -11,8 +11,6 @@ export const Cell = ({ value, columnIndex, play }) => {
   return (
     <td>
       <div
-        // justify="center"
-        // align="center"
         className={styles.gameCell}
         onClick={() => {
           play(columnIndex);
