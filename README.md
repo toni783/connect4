@@ -7,7 +7,7 @@
 - Play Connect4 locally
 - Load your game from the cloud at any time, and finish it whenever you can!
 - Responsive view for mobile gaming
-- Improved with accesibility features!
+- Improved with accessibility features!
 
 ## Technologies used
 
@@ -34,7 +34,9 @@ Note: This project needs to be connected to a database to properly work as expec
 
 ## Database Setup
 
-The project is using [Postgres](https://www.postgresql.org/about/) as the relational database on the backend side. You can run the project locally using the following [scripts](https://mega.nz/file/94l2zRLK#4A5cHGuWkLgDaxIOexSi2qupYVyYoOBQYqvHpz4jl6c) in your local Postgres server
+The project is using [Postgres](https://www.postgresql.org/about/) as the relational database on the backend side. You can run the project locally using the following [scripts](https://mega.nz/file/94l2zRLK#4A5cHGuWkLgDaxIOexSi2qupYVyYoOBQYqvHpz4jl6c) in your local Postgres server.
+
+Once the database is in place you can create locally an _env.local_ file and replace the values with your local setup values,please check the _env.local.example_ as a guideline for the env variables values
 
 If you don't have Postgres you can read more about installation and setup on the following links:
 
