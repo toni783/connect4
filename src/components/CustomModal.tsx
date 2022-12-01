@@ -1,12 +1,16 @@
 import { Col, Container, ListGroup, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import Modal, { ModalProps } from "react-bootstrap/Modal";
 import { format } from "date-fns";
 import { setSelectedBoard } from "../features/board/BoardSlice";
 import { useAppDispatch } from "../hooks";
+import { BoardState } from "../features/board/BoardTypes";
 
-// TODO: add type for bootstrap props
-const CustomModal = ({ games, ...props }) => {
+type CustomModalProps = {
+  games: BoardState[];
+} & ModalProps;
+
+const CustomModal = ({ games, ...props }: CustomModalProps) => {
   const dispatch = useAppDispatch();
 
   return (
