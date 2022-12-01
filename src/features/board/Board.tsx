@@ -198,7 +198,7 @@ export const Connect4 = () => {
               >
                 {isLoadingGames
                   ? "Loading…"
-                  : games.length > 0
+                  : games && games.length > 0
                   ? "Load Existing Game"
                   : "No saves found"}
               </Button>
