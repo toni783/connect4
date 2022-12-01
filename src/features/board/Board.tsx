@@ -19,7 +19,7 @@ import {
   setSelectedBoard,
   togglePlayer,
   updateMessage,
-} from "./boardSlice";
+} from "./BoardSlice";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
 import { Cell } from "./CustomCell";

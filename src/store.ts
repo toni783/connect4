@@ -5,7 +5,7 @@ import {
   combineReducers,
 } from "@reduxjs/toolkit";
 import { boardApi } from "./features/board/BoardAPI";
-import boardReducer from "./features/board/boardSlice";
+import boardReducer from "./features/board/BoardSlice";
 
 import counterReducer from "./features/counter/counterSlice";
 

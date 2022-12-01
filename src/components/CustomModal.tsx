@@ -2,7 +2,7 @@ import { Col, Container, ListGroup, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { format } from "date-fns";
-import { setSelectedBoard } from "../features/board/boardSlice";
+import { setSelectedBoard } from "../features/board/BoardSlice";
 import { useAppDispatch } from "../hooks";
 
 // TODO: add type for bootstrap props
