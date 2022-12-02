@@ -19,7 +19,7 @@ const initialState: BoardState = {
   ],
   isGameOver: false,
   alertMessage: {
-    messageBody: "Welcome to Connect4",
+    messageBody: "Welcome to Connect4, Please start a new game to enable the board!",
     messageVariant: "primary",
   },
   isGameDisabled: true,
