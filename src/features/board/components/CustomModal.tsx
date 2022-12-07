@@ -36,6 +36,7 @@ const CustomModal = ({ games, ...props }: CustomModalProps) => {
         <ListGroup variant="flush">
           {games.map((val) => (
             <ListGroup.Item
+              key={val.id}
               action
               onClick={() => {
                 dispatch(
