@@ -16,7 +16,10 @@ export function makeStore() {
   return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(boardApi.middleware),
+      // https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        boardApi.middleware
+      ),
   });
 }
 
