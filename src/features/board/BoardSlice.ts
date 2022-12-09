@@ -19,7 +19,8 @@ const initialState: BoardState = {
   ],
   isGameOver: false,
   alertMessage: {
-    messageBody: "Welcome to Connect4, Please start a new game to enable the board!",
+    messageBody:
+      "Welcome to Connect4, Please start a new game to enable the board!",
     messageVariant: "primary",
   },
   isGameDisabled: true,
@@ -82,7 +83,9 @@ export const gameBoardSlice = createSlice({
       state.alertMessage = {
         ...state.alertMessage,
         messageBody: action.payload.messageBody,
-        messageVariant: action.payload.messageVariant,
+        ...(action.payload.messageVariant && {
+          messageVariant: action.payload.messageVariant,
+        }),
       };
       state.gameBoard = action.payload.gameBoard;
     },
@@ -120,9 +123,9 @@ export const {
   setSelectedBoard,
 } = gameBoardSlice.actions;
 
+export default gameBoardSlice.reducer;
+
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.gameBoard.value)`
 export const selectBoard = (state: AppState) => state.gameBoard;
-
-export default gameBoardSlice.reducer;
