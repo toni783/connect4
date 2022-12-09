@@ -8,7 +8,7 @@ export interface BoardState {
   player1: Players.PLAYER_1;
   player2: Players.PLAYER_2;
   currentPlayer: Players;
-  gameBoard: number[][];
+  gameBoard: number[][] | null[][];
   isGameOver: boolean;
   alertMessage: {
     messageBody: string;
