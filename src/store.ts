@@ -3,8 +3,9 @@ import {
   ThunkAction,
   Action,
   combineReducers,
+  PreloadedState,
 } from "@reduxjs/toolkit";
-import { boardApi } from "./features/board/BoardAPI";
+import { boardApi } from "services/BoardAPI";
 import boardReducer from "./features/board/BoardSlice";
 
 const reducer = combineReducers({
@@ -12,7 +13,7 @@ const reducer = combineReducers({
   [boardApi.reducerPath]: boardApi.reducer,
 });
 
-export function makeStore() {
+export function makeStore(preloadedState?: PreloadedState<RootState>) {
   return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
@@ -20,6 +21,7 @@ export function makeStore() {
       getDefaultMiddleware({ serializableCheck: false }).concat(
         boardApi.middleware
       ),
+    preloadedState,
   });
 }
 
@@ -35,5 +37,9 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export type RootState = ReturnType<typeof reducer>;
+
+export type AppStore = ReturnType<typeof makeStore>;
 
 export default store;
