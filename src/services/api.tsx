@@ -1,6 +1,15 @@
 import { createApi, BaseQueryFn } from "@reduxjs/toolkit/query/react";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
+/**
+ * Note: Redux toolkit query has issues with cyclic dependencies when using code splitting,
+ * https://github.com/reduxjs/redux-toolkit/issues/2817
+ * https://github.com/reduxjs/redux-toolkit/issues/2817#issuecomment-1304504920
+ *
+ * Even tough we have one present on the examples provided by them it seems this issue
+ * only affects some imports ,so take this into consideration when configuring code splitting for
+ * tests
+ */
 const axiosBaseQuery =
   (
     { baseUrl }: { baseUrl: string | undefined } = { baseUrl: "" }
