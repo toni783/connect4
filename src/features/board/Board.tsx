@@ -8,7 +8,7 @@ import {
   useCreateGameMutation,
   useDeleteGameMutation,
   useUpdateGameMutation,
-} from "./BoardAPI";
+} from "../../services/BoardAPI";
 
 import {
   endGame,
@@ -131,8 +131,6 @@ export const Connect4 = () => {
         } catch (e) {
           onError();
         }
-
-        // dispatch(togglePlayer({ nextPlayer, board }));
       }
     } else {
       dispatch(
