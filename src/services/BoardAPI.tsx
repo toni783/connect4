@@ -1,5 +1,5 @@
-import { emptySplitApi, GAMES_TAGS } from "../../utils/axios";
-import { BoardState } from "./BoardTypes";
+import { BoardState } from "features/board/BoardTypes";
+import { emptySplitApi, GAMES_TAGS } from "./api";
 
 export const boardApi = emptySplitApi.injectEndpoints({
   endpoints(build) {

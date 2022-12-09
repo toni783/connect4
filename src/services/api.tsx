@@ -1,10 +1,9 @@
 import { createApi, BaseQueryFn } from "@reduxjs/toolkit/query/react";
-import axios from "axios";
-import type { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
 const axiosBaseQuery =
   (
-    { baseUrl }: { baseUrl: string } = { baseUrl: "" }
+    { baseUrl }: { baseUrl: string | undefined } = { baseUrl: "" }
   ): BaseQueryFn<
     {
       url: string;
@@ -34,6 +33,7 @@ export const GAMES_TAGS = "Games";
 
 // initialize an empty api service that we'll inject endpoints into later as needed
 export const emptySplitApi = createApi({
+  reducerPath: "emptySplitApi",
   baseQuery: axiosBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
   endpoints: () => ({}),
   tagTypes: [GAMES_TAGS],
