@@ -12,10 +12,11 @@ import { useAppDispatch } from "../../../hooks";
 import { setSelectedBoard } from "../BoardSlice";
 import { BoardState } from "../BoardTypes";
 import styles from "../../../styles/Home.module.css";
+import { WithRequiredProperty } from "types/common";
 
 type CustomModalProps = {
   games: BoardState[];
-} & ModalProps;
+} & WithRequiredProperty<ModalProps, "onHide">;
 
 const CustomModal = ({ games, ...props }: CustomModalProps) => {
   const dispatch = useAppDispatch();
