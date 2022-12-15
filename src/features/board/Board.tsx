@@ -170,7 +170,11 @@ export const Connect4 = () => {
   );
 
   useEffect(() => {
-    if (gameState.player2 === Players.BOT && gameState.isGameDisabled) {
+    if (
+      gameState.player2 === Players.BOT &&
+      gameState.isGameDisabled &&
+      !gameState.isGameOver
+    ) {
       BOTPlay(gameState.gameBoard);
     }
   }, [
