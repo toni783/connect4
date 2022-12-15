@@ -36,7 +36,7 @@ describe("Board.spec - no previous games", () => {
 
     // Board Game cells have been properly rendered
     const gameBoardCells = container.getElementsByClassName("gameCell");
-    expect(gameBoardCells).toHaveLength(42);
+    expect(gameBoardCells).toHaveLength(49);
 
     // Start new game button has been properly renderd
     const startNewGameButton = getByText("Start New Game (Locally)");
