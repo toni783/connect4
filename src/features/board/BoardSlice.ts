@@ -16,6 +16,7 @@ const initialState: BoardState = {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
   ],
   isGameOver: false,
   alertMessage: {

@@ -5,6 +5,7 @@ export const generateNewBoard = () => [
   [null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null],
 ];
 
 export const deepCloneBoard = (gameBoard) => [
@@ -14,13 +15,14 @@ export const deepCloneBoard = (gameBoard) => [
   [...gameBoard[3]],
   [...gameBoard[4]],
   [...gameBoard[5]],
+  [...gameBoard[6]],
 ];
 
 // for real tho...all credit for this super optimized logic belongs here: Jeff Leu circa November 23, 2016
 const checkVertical = (board) => {
   // Check only if row is 3 or greater
-  for (let r = 3; r < 6; r++) {
-    for (let c = 0; c < 7; c++) {
+  for (let r = 3; r < 7; r++) {
+    for (let c = 0; c < 8; c++) {
       if (board[r][c]) {
         if (
           board[r][c] === board[r - 1][c] &&
@@ -36,8 +38,8 @@ const checkVertical = (board) => {
 
 const checkHorizontal = (board) => {
   // Check only if column is 3 or less
-  for (let r = 0; r < 6; r++) {
-    for (let c = 0; c < 4; c++) {
+  for (let r = 0; r < 7; r++) {
+    for (let c = 0; c < 5; c++) {
       if (board[r][c]) {
         if (
           board[r][c] === board[r][c + 1] &&
@@ -53,8 +55,8 @@ const checkHorizontal = (board) => {
 
 const checkDiagonalRight = (board) => {
   // Check only if row is 3 or greater AND column is 3 or less
-  for (let r = 3; r < 6; r++) {
-    for (let c = 0; c < 4; c++) {
+  for (let r = 3; r < 7; r++) {
+    for (let c = 0; c < 5; c++) {
       if (board[r][c]) {
         if (
           board[r][c] === board[r - 1][c + 1] &&
@@ -70,8 +72,8 @@ const checkDiagonalRight = (board) => {
 
 const checkDiagonalLeft = (board) => {
   // Check only if row is 3 or greater AND column is 3 or greater
-  for (let r = 3; r < 6; r++) {
-    for (let c = 3; c < 7; c++) {
+  for (let r = 3; r < 7; r++) {
+    for (let c = 3; c < 8; c++) {
       if (board[r][c]) {
         if (
           board[r][c] === board[r - 1][c - 1] &&
@@ -86,7 +88,7 @@ const checkDiagonalLeft = (board) => {
 };
 
 const checkDraw = (board) => {
-  for (let r = 0; r < 6; r++) {
+  for (let r = 0; r < 7; r++) {
     for (let c = 0; c < 7; c++) {
       if (board[r][c] === null) {
         return null;
