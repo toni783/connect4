@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
@@ -13,16 +13,16 @@ import {
 import {
   endGame,
   getPlayerTurnMessage,
-  newGame,
   selectBoard,
   setSelectedBoard,
-  togglePlayer,
   updateMessage,
 } from "./BoardSlice";
 import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 
 import { Cell } from "./components/CustomCell";
 import CustomModal from "./components/CustomModal";
+import { Players } from "./BoardTypes";
+import { randomNumber } from "utils/common";
 
 export const Connect4 = () => {
   const gameState = useAppSelector(selectBoard);
@@ -30,29 +30,30 @@ export const Connect4 = () => {
 
   const { data: games, isLoading: isLoadingGames } = useGetGamesQuery();
 
-  const [createGame, result] = useCreateGameMutation();
+  const [createGame] = useCreateGameMutation();
 
-  const [deleteGame, result2] = useDeleteGameMutation();
+  const [deleteGame] = useDeleteGameMutation();
 
-  const [updateGame, result3] = useUpdateGameMutation();
+  const [updateGame] = useUpdateGameMutation();
 
   const [displayModal, setDisplayModal] = useState(false);
 
-  const onError = () => {
+  const onError = useCallback(() => {
     dispatch(
       updateMessage({
         messageBody: "Unexpected error! Please try again!",
       })
     );
-  };
+  }, [dispatch]);
 
-  const onStartNewGame = async () => {
+  const onStartNewGame = async (isBotGame?: boolean) => {
     try {
       const result = await createGame({
         gameBoard: generateNewBoard(),
         alertMessage: getPlayerTurnMessage(gameState.currentPlayer),
         isGameOver: false,
         isGameDisabled: false,
+        ...(isBotGame && { player2: Players.BOT }),
       }).unwrap();
       dispatch(
         setSelectedBoard({
@@ -64,82 +65,121 @@ export const Connect4 = () => {
     }
   };
 
-  const play = async (c, r) => {
-    let gameBoard = deepCloneBoard(gameState.gameBoard);
-    if (!gameBoard[r][c]) {
-      gameBoard[r][c] = gameState.currentPlayer;
+  const play = useCallback(
+    async (c, r) => {
+      const gameBoard = deepCloneBoard(gameState.gameBoard);
+      if (!gameBoard[r][c]) {
+        gameBoard[r][c] = gameState.currentPlayer;
 
-      // Check status of board
-      let result = checkForWin(gameBoard);
-      if (result === gameState.player1) {
-        try {
-          const result = await deleteGame(gameState.id).unwrap();
-          dispatch(
-            endGame({
-              messageBody: "Player1 (red) wins!",
-              messageVariant: "danger",
-              gameBoard,
-            })
-          );
-        } catch (e) {
-          onError();
-        }
-      } else if (result === gameState.player2) {
-        try {
-          const result = await deleteGame(gameState.id).unwrap();
+        // Check status of board
+        const checkW = checkForWin(gameBoard);
+        if (checkW === gameState.player1) {
+          try {
+            await deleteGame(gameState.id).unwrap();
+            dispatch(
+              endGame({
+                messageBody: "Player1 (red) wins!",
+                messageVariant: "danger",
+                gameBoard,
+              })
+            );
+          } catch (e) {
+            onError();
+          }
+        } else if (checkW === gameState.player2) {
+          try {
+            await deleteGame(gameState.id).unwrap();
 
-          dispatch(
-            endGame({
-              messageBody: "Player2 (yellow) wins!",
-              messageVariant: "warning",
+            dispatch(
+              endGame({
+                messageBody: "Player2 (yellow) wins!",
+                messageVariant: "warning",
+                gameBoard,
+              })
+            );
+          } catch (e) {
+            onError();
+          }
+        } else if (checkW === "draw") {
+          try {
+            await deleteGame(gameState.id).unwrap();
+            dispatch(
+              endGame({
+                messageBody: "Draw Game!",
+                gameBoard,
+              })
+            );
+          } catch (e) {
+            onError();
+          }
+        } else {
+          const nextPlayer =
+            gameState.currentPlayer === gameState.player1
+              ? gameState.player2
+              : gameState.player1;
+
+          try {
+            const result = await updateGame({
+              ...gameState,
+              currentPlayer: nextPlayer,
               gameBoard,
-            })
-          );
-        } catch (e) {
-          onError();
-        }
-      } else if (result === "draw") {
-        try {
-          const result = await deleteGame(gameState.id).unwrap();
-          dispatch(
-            endGame({
-              messageBody: "Draw Game!",
-              gameBoard,
-            })
-          );
-        } catch (e) {
-          onError();
+              alertMessage: getPlayerTurnMessage(nextPlayer),
+              isGameDisabled: nextPlayer === Players.BOT,
+            }).unwrap();
+            dispatch(
+              setSelectedBoard({
+                gameBoard: result,
+              })
+            );
+          } catch (e) {
+            onError();
+          }
         }
       } else {
-        const nextPlayer =
-          gameState.currentPlayer === gameState.player1
-            ? gameState.player2
-            : gameState.player1;
+        dispatch(
+          updateMessage({
+            messageBody: "Please Select Another Cell",
+          })
+        );
+      }
+    },
+    [deleteGame, dispatch, gameState, onError, updateGame]
+  );
 
-        try {
-          const result = await updateGame({
-            ...gameState,
-            currentPlayer: nextPlayer,
-            gameBoard,
-            alertMessage: getPlayerTurnMessage(nextPlayer),
-          }).unwrap();
-          dispatch(
-            setSelectedBoard({
-              gameBoard: result,
-            })
-          );
-        } catch (e) {
-          onError();
+  const BOTPlay = useCallback(
+    (gameBoard) => {
+      const availableMoves: number[][] = [];
+
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 7; c++) {
+          if (gameBoard[r][c] === null) {
+            availableMoves.push([r, c]);
+          }
         }
       }
-    } else {
-      dispatch(
-        updateMessage({
-          messageBody: "Please Select Another Cell",
-        })
-      );
+      const [r, c] = availableMoves[randomNumber(0, availableMoves.length)];
+
+      // Simulate connection with websocket, endpoint ,etc.. adding a delay
+      const promise = new Promise((resolve) => {
+        setTimeout(() => resolve(2), 2000);
+      });
+
+      promise.then(() => play(c, r));
+    },
+    [play]
+  );
+
+  useEffect(() => {
+    if (gameState.player2 === Players.BOT && gameState.isGameDisabled) {
+      BOTPlay(gameState.gameBoard);
     }
-  };
+  }, [
+    BOTPlay,
+    gameState.gameBoard,
+    gameState.isGameDisabled,
+    gameState.player2,
+  ]);
+
   return (
     <>
       <Container>
@@ -185,8 +225,19 @@ export const Connect4 = () => {
               ) : null}
             </Row>
             <Row className={`m-2`}>
-              <Button className={styles.button} onClick={onStartNewGame}>
+              <Button
+                className={styles.button}
+                onClick={() => onStartNewGame()}
+              >
                 Start New Game (Locally)
+              </Button>
+            </Row>
+            <Row className={`m-2`}>
+              <Button
+                className={styles.button}
+                onClick={() => onStartNewGame(true)}
+              >
+                Start New Game Against Bot
               </Button>
             </Row>
             <Row className={`m-2`}>
