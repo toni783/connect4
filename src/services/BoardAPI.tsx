@@ -1,4 +1,5 @@
 import { BoardState } from "features/board/BoardTypes";
+import { OptionalExceptFor } from "types/common";
 import { emptySplitApi, GAMES_TAGS } from "./api";
 
 export const boardApi = emptySplitApi.injectEndpoints({
@@ -10,7 +11,7 @@ export const boardApi = emptySplitApi.injectEndpoints({
       }),
       createGame: build.mutation<
         BoardState,
-        Pick<
+        OptionalExceptFor<
           BoardState,
           "isGameOver" | "alertMessage" | "isGameDisabled" | "gameBoard"
         >
