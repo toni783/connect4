@@ -181,6 +181,7 @@ export const Connect4 = () => {
     BOTPlay,
     gameState.gameBoard,
     gameState.isGameDisabled,
+    gameState.isGameOver,
     gameState.player2,
   ]);
 

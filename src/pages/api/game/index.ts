@@ -13,7 +13,10 @@ created_time as "createdTime",
 update_time as "updatedTime" , 
 array_to_json(game_board) as "gameBoard"`;
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { method, body } = req;
 
   switch (method) {

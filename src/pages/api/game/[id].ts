@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { SELECT_STATEMENT } from ".";
 import { conn } from "../../../utils/database";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const {
     method,
     body,
@@ -54,4 +57,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       return res.status(400).json({ message: "Method are not supported" });
   }
-};
+}
