@@ -12,7 +12,7 @@ export const Cell = ({ value, columnIndex, play }: CellProps) => {
 
   if (value === Players.PLAYER_1) {
     color = "redCircle";
-  } else if (value === Players.PLAYER_2) {
+  } else if (value === Players.PLAYER_2 || value === Players.BOT) {
     color = "yellowCircle";
   }
 
@@ -21,7 +21,7 @@ export const Cell = ({ value, columnIndex, play }: CellProps) => {
       aria-label={`Connect4 ${
         value === Players.PLAYER_1
           ? "Red"
-          : value === Players.PLAYER_2
+          : value === Players.PLAYER_2 || value === Players.BOT
           ? "Yellow"
           : "Empty"
       } Cell`}

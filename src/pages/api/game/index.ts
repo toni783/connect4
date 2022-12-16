@@ -30,16 +30,23 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       }
     case "POST":
       try {
-        const { isGameOver, alertMessage, isGameDisabled, gameBoard } = body;
+        const { isGameOver, alertMessage, isGameDisabled, gameBoard, player2 } =
+          body;
 
         const query = `
             INSERT INTO game
-                (is_game_over, alert_message, is_game_disabled, game_board)
+                (is_game_over, alert_message, is_game_disabled, game_board, player_2)
             VALUES
-                ($1, $2, $3, $4)
+                ($1, $2, $3, $4, COALESCE($5, 2)) 
             RETURNING ${SELECT_STATEMENT};
           `;
-        const values = [isGameOver, alertMessage, isGameDisabled, gameBoard];
+        const values = [
+          isGameOver,
+          alertMessage,
+          isGameDisabled,
+          gameBoard,
+          player2,
+        ];
 
         const response = await conn.query(query, values);
 

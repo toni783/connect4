@@ -16,6 +16,7 @@ const initialState: BoardState = {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null],
   ],
   isGameOver: false,
   alertMessage: {
@@ -35,9 +36,13 @@ export function getPlayerTurnMessage(
     messageVariant: "danger",
     messageBody: "Player1 (red) turn",
   };
-  if (playerType === Players.PLAYER_2) {
+  if (playerType === Players.PLAYER_2 || playerType === Players.BOT) {
     message.messageVariant = "warning";
-    message.messageBody = "Player2 (yellow) turn";
+    message.messageBody = `Player2 (yellow) turn ${
+      playerType === Players.BOT
+        ? ", Please wait while the BOT is playing..."
+        : ""
+    }`;
   }
 
   return message;
