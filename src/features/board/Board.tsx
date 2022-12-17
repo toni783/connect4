@@ -22,7 +22,7 @@ import { deepCloneBoard, checkForWin, generateNewBoard } from "./BoardUtils";
 import { Cell } from "./components/CustomCell";
 import CustomModal from "./components/CustomModal";
 import { Players } from "./BoardTypes";
-import { randomNumber } from "utils/common";
+import { randomNumberInRange } from "utils/common";
 
 export const Connect4 = () => {
   const gameState = useAppSelector(selectBoard);
@@ -146,43 +146,35 @@ export const Connect4 = () => {
     [deleteGame, dispatch, gameState, onError, updateGame]
   );
 
-  const BOTPlay = useCallback(
-    (gameBoard) => {
+  /**
+   * Verify if a BOT user is playing to trigger the BOT play
+   */
+  useEffect(() => {
+    if (gameState.currentPlayer === Players.BOT && !gameState.isGameOver) {
       const availableMoves: number[][] = [];
 
       for (let r = 0; r < 7; r++) {
         for (let c = 0; c < 7; c++) {
-          if (gameBoard[r][c] === null) {
+          if (gameState.gameBoard[r][c] === null) {
             availableMoves.push([r, c]);
           }
         }
       }
-      const [r, c] = availableMoves[randomNumber(0, availableMoves.length)];
+      const [r, c] =
+        availableMoves[randomNumberInRange(0, availableMoves.length)];
 
       // Simulate connection with websocket, endpoint ,etc.. adding a delay
       const promise = new Promise((resolve) => {
-        setTimeout(() => resolve(2), 2000);
+        setTimeout(() => resolve(2), 750);
       });
 
       promise.then(() => play(c, r));
-    },
-    [play]
-  );
-
-  useEffect(() => {
-    if (
-      gameState.player2 === Players.BOT &&
-      gameState.isGameDisabled &&
-      !gameState.isGameOver
-    ) {
-      BOTPlay(gameState.gameBoard);
     }
   }, [
-    BOTPlay,
+    gameState.currentPlayer,
     gameState.gameBoard,
-    gameState.isGameDisabled,
     gameState.isGameOver,
-    gameState.player2,
+    play,
   ]);
 
   return (
